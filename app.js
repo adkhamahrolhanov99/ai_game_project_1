@@ -76,15 +76,16 @@ const root = new GameState({
 
 // === GLOBAL VARIABLES ===
 const moveLogEl = document.getElementById("move-log");
-let moveHistory = [];              // Stores move messages
-let aiNodesVisited = 0;            // Tracks number of nodes visited per AI move
-let aiStartTime = 0;               // Start time for AI move (ms)
-let currentState;                  // Holds current game state object
+let moveHistory = [];
+let aiNodesVisited = 0;
+let aiStartTime = 0;
+let currentState; // Global game state variable
 
-startNewGame(); // Start game on page load
+// Note: We no longer call startNewGame() automatically.
+// The game will start when the user clicks the "Start Game" button.
 
-// === UPDATE DISPLAY ===
-// Updates number, scores, and turn/status on the page
+// === DISPLAY GAME STATE ===
+// Updates game info and status on the page
 function updateDisplay() {
   const gameInfo = document.getElementById("game-info");
   const status = document.getElementById("status");
@@ -101,14 +102,15 @@ function updateDisplay() {
 }
 
 // === GAME RESULT ===
-// Returns string: who wins or draw
+// Returns a message indicating the winner or if it's a draw
 function getResultMessage() {
   if (currentState.computerScore > currentState.humanScore) return "Computer wins!";
   if (currentState.humanScore > currentState.computerScore) return "You win!";
   return "It's a draw!";
 }
 
-// === LOG EACH MOVE TO THE LIST ===
+// === MOVE LOGGING ===
+// Logs each move in the move history list on the page
 function logMove(actor, divisor, result, humanScore, computerScore) {
   const message = `${actor} divided by ${divisor}, result: ${result} | Human: ${humanScore}, Computer: ${computerScore}`;
   moveHistory.push(message);
@@ -118,20 +120,18 @@ function logMove(actor, divisor, result, humanScore, computerScore) {
 }
 
 // === PLAYER MOVE ===
-// Handles user interaction for ÷2, ÷3, ÷4
+// Handles the player's move when a move button (÷2, ÷3, ÷4) is clicked
 function playerMove(divisor) {
   if (currentState.isComputerTurn || currentState.number <= 10) return;
 
-  // If player can't move
+  // If player cannot move
   if (!hasValidMoves(currentState.number)) {
     const testState = new GameState({ ...currentState, isComputerTurn: true });
-
     if (!hasValidMoves(testState.number)) {
       alert("No valid moves for either player. Ending game.\n\n" + getResultMessage());
       updateDisplay();
       return;
     }
-
     alert("No valid moves for you. Skipping to computer.");
     currentState.isComputerTurn = true;
     updateDisplay();
@@ -139,17 +139,17 @@ function playerMove(divisor) {
     return;
   }
 
-  // If invalid move (not divisible)
+  // Check if the chosen move is valid (divisible)
   if (currentState.number % divisor !== 0) {
     alert("Invalid move!");
     return;
   }
 
-  // Make the move
   const newNumber = currentState.number / divisor;
   let newHumanScore = currentState.humanScore;
   let newComputerScore = currentState.computerScore;
 
+  // Update scores based on the new number being even or odd
   if (newNumber % 2 === 0) {
     newComputerScore = Math.max(0, newComputerScore - 1);
   } else {
@@ -169,29 +169,26 @@ function playerMove(divisor) {
 }
 
 // === COMPUTER MOVE ===
-// AI chooses best move based on selected algorithm
+// AI selects and executes the best move using the chosen algorithm
 function computerMove() {
   console.log("Computer is thinking... 🤖");
 
   if (!currentState.isComputerTurn || currentState.number <= 10) return;
 
-  // If AI can't move
+  // Check if computer can move; if not, verify if human can also not move to end the game
   if (!hasValidMoves(currentState.number)) {
     const testState = new GameState({ ...currentState, isComputerTurn: false });
-
     if (!hasValidMoves(testState.number)) {
       alert("No valid moves for either player. Ending game.\n\n" + getResultMessage());
       updateDisplay();
       return;
     }
-
     console.log("Computer has no valid moves. Skipping to you.");
     currentState.isComputerTurn = false;
     updateDisplay();
     return;
   }
 
-  // Start performance tracking
   const selectedAlgo = document.getElementById("algorithm-select").value;
   aiNodesVisited = 0;
   aiStartTime = performance.now();
@@ -212,17 +209,18 @@ function computerMove() {
   }
 
   currentState = bestMove;
-
   logMove("Computer", bestMove.move, bestMove.number, bestMove.humanScore, bestMove.computerScore);
   updateDisplay();
 }
 
-// === VALID MOVE CHECKER ===
+// === CHECK FOR VALID MOVES ===
+// Returns true if at least one valid division exists for the current number
 function hasValidMoves(number) {
   return [2, 3, 4].some(divisor => number % divisor === 0);
 }
 
-// === GENERATE RANDOM VALID STARTING NUMBER ===
+// === GENERATE A RANDOM VALID STARTING NUMBER ===
+// Returns a number between 20,000 and 30,000 divisible by 2, 3, and 4
 function getRandomStartNumber() {
   let num;
   do {
@@ -231,16 +229,26 @@ function getRandomStartNumber() {
   return num;
 }
 
-// === RESET GAME ===
+// === START NEW GAME ===
+// Reads the chosen starting player from the dropdown, resets state and move log, then begins the game
 function startNewGame() {
+  // Get the selected first player from the dropdown (human or computer)
+  const firstPlayer = document.getElementById("first-player-select").value;
+  const isComputerFirst = firstPlayer === "computer";
+
   currentState = new GameState({
     number: getRandomStartNumber(),
     humanScore: 0,
     computerScore: 0,
-    isComputerTurn: false
+    isComputerTurn: isComputerFirst
   });
 
   moveHistory = [];
   moveLogEl.innerHTML = "";
   updateDisplay();
+
+  // If computer is selected to start, trigger its move after a brief delay
+  if (isComputerFirst) {
+    setTimeout(() => computerMove(), 500);
+  }
 }

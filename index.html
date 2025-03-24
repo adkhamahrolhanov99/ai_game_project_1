@@ -29,6 +29,7 @@
 
   <h2>AI Game</h2>
 
+  <!-- Dropdown to select algorithm -->
   <p>
     Select Algorithm:
     <select id="algorithm-select">
@@ -37,22 +38,33 @@
     </select>
   </p>
 
-  <div id="status"></div>
-
+  <!-- Dropdown to choose who starts the game -->
   <p>
-    Choose a move:
+    Who starts the game:
+    <select id="first-player-select">
+      <option value="human">Human</option>
+      <option value="computer">Computer</option>
+    </select>
+  </p>
+
+  <!-- Start and move buttons -->
+  <p>
+    <button onclick="startNewGame()">▶️ Start Game</button>
     <button onclick="playerMove(2)">÷2</button>
     <button onclick="playerMove(3)">÷3</button>
     <button onclick="playerMove(4)">÷4</button>
-    <button onclick="startNewGame()">🔁 New Game</button>
+    <button onclick="startNewGame()">🔁 Restart Game</button>
   </p>
 
+  <!-- Game status and info -->
+  <div id="status"></div>
   <div id="game-info"></div>
 
+  <!-- Move history log -->
   <h3>Move History</h3>
   <ul id="move-log"></ul>
 
-  <!-- Game logic scripts -->
+  <!-- Load game logic scripts -->
   <script src="game.js"></script>
   <script src="app.js"></script>
 </body>
