@@ -252,3 +252,8 @@ function startNewGame() {
     setTimeout(() => computerMove(), 500);
   }
 }
+
+document.getElementById("rules-button").addEventListener("click", function () {
+  const rulesContainer = document.getElementById("rules-container");
+  rulesContainer.style.display = (rulesContainer.style.display === "none" || rulesContainer.style.display === "") ? "block" : "none";
+});

@@ -1,0 +1,108 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Titres */
+h1 {
+    color: #f4b400;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+/* Sélections */
+select {
+    padding: 10px;
+    margin: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+}
+
+/* Boutons */
+button {
+    background-color: #f4b400;
+    color: #1e1e1e;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #ffa726;
+}
+
+/* Zone d'information */
+#game-info, #status {
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+/* Historique des coups */
+#move-log {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 300px;
+    margin: 20px auto;
+}
+
+#move-log li {
+    background-color: #333;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    color: #f4b400;
+}
+
+#rules-button {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #007acc;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: -140px;
+}
+
+#rules-button:hover {
+    background-color: #005f99;
+    padding: 100px;
+}
+
+#rules-container {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    width: 250px;
+    display: none;
+    margin-left: 180px;
+    font-size: smaller;
+}
+
+.hidden {
+    display: none;
+}
+

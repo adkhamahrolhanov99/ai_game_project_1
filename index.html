@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <link rel="stylesheet" href="style.css">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,7 +8,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      padding: 50px;
     }
     h2, h3 {
       margin-top: 30px;
@@ -27,7 +28,7 @@
 </head>
 <body>
 
-  <h2>AI Game</h2>
+  <h1>AI Game</h1>
 
   <!-- Dropdown to select algorithm -->
   <p>
@@ -55,6 +56,23 @@
     <button onclick="playerMove(4)">÷4</button>
     <button onclick="startNewGame()">🔁 Restart Game</button>
   </p>
+
+  <button id="rules-button">ℹ️ Rules & Tips</button>
+<div id="rules-container" class="hidden">
+  <h2>Rules</h2>
+  <p>Divide the current number by 2, 3, or 4 on your turn. Score a point if your division results in a whole number. No points for decimal results.
+    Players take turns until the number becomes too small to continue. The player with the most points wins.</p>
+  <h3>Tips</h3>
+  <ul>
+    <li>
+
+      Check if your division will give a whole number before playing. Plan your moves to force your opponent into decimal results. 
+      Prime numbers multiplied by 2, 3, or 4 offer good strategic options. </li>
+    <li>Watch for patterns in the computer's strategy. 
+      Even numbers often provide more whole-number division possibilities than odd numbers.</li>
+  </ul>
+</div>
+
 
   <!-- Game status and info -->
   <div id="status"></div>
